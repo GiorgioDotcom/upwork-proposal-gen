@@ -75,6 +75,14 @@ export class ProposalService implements OnModuleInit {
     );
   }
 
+  /** Newest-first list of proposals with their source job post, for the dashboard. */
+  async list(): Promise<Proposal[]> {
+    return this.proposals.find({
+      relations: { jobPost: true },
+      order: { createdAt: 'DESC' },
+    });
+  }
+
   async setOutcome(id: string, dto: UpdateOutcomeDto): Promise<Proposal> {
     const proposal = await this.proposals.findOne({ where: { id } });
     if (!proposal) {

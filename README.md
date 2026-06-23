@@ -52,6 +52,30 @@ curl -s -X PATCH localhost:3000/proposals/<id> \
   -d '{"outcome":"won"}'
 ```
 
+## Dashboard (`web/`)
+
+A React + TypeScript (Vite) dashboard wraps the API — no more curl. Three tabs:
+
+- **Generate** — paste a job post, generate a proposal, copy it.
+- **History** — every past proposal with its keywords, job excerpt, and one-click
+  outcome marking (pending / won / lost).
+- **Analytics** — win rate per keyword.
+
+Run both (two terminals):
+
+```bash
+# terminal 1 — API
+PORT=3001 npm run start:dev
+
+# terminal 2 — dashboard
+cd web
+npm install
+npm run dev          # http://localhost:5173
+```
+
+The dashboard reads the API base from `web/.env` (`VITE_API_URL`, default
+`http://localhost:3001`). The API enables CORS for the dev origin.
+
 ## Models
 
 - Extraction: `claude-haiku-4-5-20251001`
@@ -61,6 +85,6 @@ Override via `EXTRACT_MODEL` / `WRITE_MODEL` env vars.
 
 ## Roadmap
 
-- Minimal web form / Retool UI instead of curl
 - Migrations (replace `synchronize`)
-- Tone A/B + analytics on what converts
+- Tone A/B + deeper analytics on what converts
+- Serve the built dashboard from Nest (single port) for production

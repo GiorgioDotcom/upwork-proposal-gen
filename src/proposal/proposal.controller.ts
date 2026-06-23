@@ -18,6 +18,20 @@ export class ProposalController {
     };
   }
 
+  @Get('proposals')
+  async list() {
+    const proposals = await this.proposalService.list();
+    return proposals.map((p) => ({
+      id: p.id,
+      content: p.content,
+      model: p.model,
+      outcome: p.outcome,
+      createdAt: p.createdAt,
+      keywords: p.jobPost?.parsedKeywords ?? [],
+      jobExcerpt: p.jobPost?.rawText?.slice(0, 200) ?? '',
+    }));
+  }
+
   @Patch('proposals/:id')
   setOutcome(@Param('id') id: string, @Body() dto: UpdateOutcomeDto) {
     return this.proposalService.setOutcome(id, dto);
